@@ -17,6 +17,11 @@ class TransactionPolicy
         return true;
     }
 
+    public function create(User $user): bool
+    {
+        return true;
+    }
+
     public function void(User $user, Transaction $transaction): bool
     {
         return $user->role->canManageTransactions();
