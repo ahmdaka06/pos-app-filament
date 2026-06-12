@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\PaymentMethodController;
 use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\Api\V1\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,7 @@ Route::prefix('v1')->group(function () {
         Route::get('transactions/{transaction}', [TransactionController::class, 'show']);
         Route::post('transactions/{transaction}/void', [TransactionController::class, 'void']);
         Route::post('transactions/{transaction}/refund', [TransactionController::class, 'refund']);
+
+        Route::get('reports/summary', [ReportController::class, 'summary']);
     });
 });
