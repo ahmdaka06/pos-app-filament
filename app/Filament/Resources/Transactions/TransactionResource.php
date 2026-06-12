@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Transactions;
 
+use App\Filament\Resources\Transactions\Pages\CreateTransaction;
 use App\Filament\Resources\Transactions\Pages\ListTransactions;
 use App\Filament\Resources\Transactions\Pages\ViewTransaction;
 use App\Filament\Resources\Transactions\Schemas\TransactionForm;
@@ -21,7 +22,7 @@ class TransactionResource extends Resource
 
     public static function canCreate(): bool
     {
-        return false;
+        return true;
     }
 
     public static function form(Schema $schema): Schema
@@ -44,6 +45,7 @@ class TransactionResource extends Resource
     public static function getPages(): array
     {
         return [
+            'create' => CreateTransaction::route('/create'),
             'index' => ListTransactions::route('/'),
             'view' => ViewTransaction::route('/{record}'),
         ];

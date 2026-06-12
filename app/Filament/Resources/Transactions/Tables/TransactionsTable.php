@@ -31,7 +31,9 @@ class TransactionsTable
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('grand_total')
-                    ->money()
+                    ->money('IDR')
+                    ->formatStateUsing(fn ($state) => number_format($state, 0, ',', '.'))
+                    ->suffix(' IDR')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()

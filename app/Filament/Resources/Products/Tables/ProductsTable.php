@@ -34,10 +34,14 @@ class ProductsTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('price')
-                    ->money()
+                    ->money('IDR')
+                    ->formatStateUsing(fn ($state) => number_format($state, 0, ',', '.'))
+                    ->suffix(' IDR')
                     ->sortable(),
                 TextColumn::make('cost_price')
-                    ->money()
+                    ->money('IDR')
+                    ->formatStateUsing(fn ($state) => number_format($state, 0, ',', '.'))
+                    ->suffix(' IDR')
                     ->sortable(),
                 TextColumn::make('unit')
                     ->searchable(),

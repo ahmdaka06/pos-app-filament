@@ -33,6 +33,10 @@ class ProductForm
                     ->numeric(),
                 TextInput::make('unit')
                     ->default('pcs'),
+                TextInput::make('stock')
+                    ->numeric()
+                    ->default(0)
+                    ->required(),
                 TextInput::make('reorder_level')
                     ->numeric()
                     ->default(0),

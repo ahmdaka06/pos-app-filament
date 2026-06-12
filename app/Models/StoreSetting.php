@@ -17,23 +17,23 @@ class StoreSetting extends Model
         return ['tax_percent' => 'decimal:2'];
     }
 
-    public const CACHE_KEY = 'store_settings.current';
+    public const CACHE_KEY = 'store_settings';
 
     public static function current(): self
     {
-        return Cache::remember(self::CACHE_KEY, now()->addHour(), function () {
-            return self::query()->first() ?? new self([
+        $attributes = Cache::remember(self::CACHE_KEY, 3600, function () {
+            return self::query()->first()?->toArray() ?? [
                 'store_name' => 'My Store',
                 'currency' => 'IDR',
                 'tax_percent' => 0,
                 'invoice_prefix' => 'INV',
-            ]);
+            ];
         });
-    }
 
-    protected static function booted(): void
-    {
-        static::saved(fn () => Cache::forget(self::CACHE_KEY));
-        static::deleted(fn () => Cache::forget(self::CACHE_KEY));
+        $instance = new self;
+        $instance->setRawAttributes($attributes);
+        $instance->exists = true;
+
+        return $instance;
     }
 }
