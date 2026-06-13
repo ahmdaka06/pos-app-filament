@@ -20,8 +20,12 @@ class CatalogApiTest extends TestCase
         $this->actingAs($user, 'sanctum')
             ->getJson('/api/v1/products?search=Kopi')
             ->assertOk()
-            ->assertJsonStructure(['data' => [['id', 'name', 'price', 'stock']], 'meta', 'links'])
-            ->assertJsonPath('meta.total', 1);
+            ->assertJsonStructure(['data' => [['id', 'name', 'price', 'stock']], 'meta'])
+            ->assertJsonMissingPath('links')
+            ->assertJsonPath('meta.page', 1)
+            ->assertJsonPath('meta.limit', 20)
+            ->assertJsonPath('meta.total', 1)
+            ->assertJsonPath('meta.total_pages', 1);
     }
 
     public function test_categories_listing_requires_auth(): void
