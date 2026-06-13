@@ -8,7 +8,8 @@ use App\Actions\VoidTransactionAction;
 use App\Exceptions\InsufficientStockException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreTransactionRequest;
-use App\Http\Resources\TransactionResource;
+use App\Http\Resources\Transaction\TransactionCollection;
+use App\Http\Resources\Transaction\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -26,21 +27,18 @@ class TransactionController extends Controller
             $query->where('status', $request->string('status'));
         }
 
-        return TransactionResource::collection($query->paginate(20));
+        return new TransactionCollection($query->paginate(20));
     }
 
     public function store(StoreTransactionRequest $request, CreateSaleAction $action)
     {
         $key = $request->header('Idempotency-Key');
-
         $existing = $key ? Transaction::where('idempotency_key', $key)->first() : null;
 
         try {
             $transaction = $action->execute($request->validated(), $request->user(), $key);
         } catch (InsufficientStockException $e) {
-            throw ValidationException::withMessages([
-                'items' => [$e->getMessage()],
-            ]);
+            throw ValidationException::withMessages(['items' => [$e->getMessage()]]);
         }
 
         $status = ($existing && $existing->id === $transaction->id) ? 200 : 201;
