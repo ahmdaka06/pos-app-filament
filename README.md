@@ -95,7 +95,87 @@ Aplikasi Point of Sale berbasis web yang dibangun dengan Laravel 13, Filament 5,
 
 ---
 
-### Opsi 2 — Docker
+### Opsi 2 — PHP Artisan Serve (Tanpa Web Server)
+
+Cara paling cepat untuk menjalankan aplikasi secara lokal tanpa perlu Laragon atau Docker.
+
+**Prasyarat:**
+- PHP 8.4
+- Composer
+- Node.js 20+
+- MySQL (XAMPP, Laragon, atau instalasi manual)
+
+**Langkah instalasi:**
+
+1. Clone repository:
+
+   ```bash
+   git clone <repo-url> pos-app-filament
+   cd pos-app-filament
+   ```
+
+2. Install dependensi PHP dan Node:
+
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. Salin file environment dan generate app key:
+
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. Konfigurasi database di file `.env`:
+
+   ```env
+   APP_NAME="POS App"
+   APP_URL=http://localhost:8000
+
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=pos_app_filament
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+5. Buat database `pos_app_filament` di MySQL, lalu jalankan migrasi dan seeder:
+
+   ```bash
+   php artisan migrate --seed
+   ```
+
+6. Build assets frontend:
+
+   ```bash
+   npm run build
+   ```
+
+7. Buat symlink storage:
+
+   ```bash
+   php artisan storage:link
+   ```
+
+8. Jalankan development server:
+
+   ```bash
+   php artisan serve
+   ```
+
+9. Akses aplikasi di `http://localhost:8000`.
+
+   > Untuk menjalankan queue worker bersamaan, buka terminal baru dan jalankan:
+   > ```bash
+   > php artisan queue:work
+   > ```
+
+---
+
+### Opsi 3 — Docker
 
 **Prasyarat:**
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
@@ -209,7 +289,7 @@ Setelah menjalankan `php artisan migrate --seed`, tersedia 3 akun default:
 Setelah login, panel tersedia di:
 
 ```
-http://localhost:8000/admin          (Docker)
+http://localhost:8000/admin          (Docker / Artisan Serve)
 http://pos-app-filament.test/admin   (Laragon)
 ```
 
