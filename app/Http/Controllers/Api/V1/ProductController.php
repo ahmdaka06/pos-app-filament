@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductResource;
+use App\Http\Resources\Product\ProductCollection;
+use App\Http\Resources\Product\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,7 @@ class ProductController extends Controller
             ->orderBy('name')
             ->paginate(20);
 
-        return ProductResource::collection($products);
+        return new ProductCollection($products);
     }
 
     public function show(Product $product)
