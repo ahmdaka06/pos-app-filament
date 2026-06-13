@@ -2,7 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\SalesChart;
 use App\Filament\Widgets\SalesStatsOverview;
+use App\Filament\Widgets\TopSellingProducts;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -43,6 +45,8 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                 FilamentInfoWidget::class,
                 SalesStatsOverview::class,
+                SalesChart::class,
+                TopSellingProducts::class,
             ])
             ->middleware([
                 EncryptCookies::class,
