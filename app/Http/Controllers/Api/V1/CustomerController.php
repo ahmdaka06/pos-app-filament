@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreCustomerRequest;
-use App\Http\Resources\CustomerResource;
+use App\Http\Resources\Customer\CustomerCollection;
+use App\Http\Resources\Customer\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class CustomerController extends Controller
             ->orderBy('name')
             ->paginate(20);
 
-        return CustomerResource::collection($customers);
+        return new CustomerCollection($customers);
     }
 
     public function store(StoreCustomerRequest $request)
